@@ -1,0 +1,67 @@
+.navbar {
+    background-color: #477ed1;
+    font-family: 'Montserrat', sans-serif;
+    color: #F2F2F2;
+}
+
+form label {
+    font-weight: bold;
+}
+
+input[type="radio"]+label + .showother {
+    display: none;
+}
+
+input[type="radio"]:checked+label+.showother {
+    display: block;
+}
+
+input[type="checkbox"]+label+.showother {
+    display: none;
+}
+
+input[type="checkbox"]:checked+label+.showother {
+    display: block;
+}
+
+.form-upload {
+    display: flex;
+}
+
+.card {
+    margin-left: 30px;
+    margin-right: 30px;
+    border: none;
+}
+
+@media only screen and (max-width: 726px) {
+    .shrink {
+        font-size: 50px !important;
+    }
+    .card {
+        width: 80% !important;
+        margin: 0 auto;
+    }
+}
+
+h1{
+    margin-top: 50px;
+    margin-bottom: 50px;
+    font-size: 4.5rem;
+    text-align: center;
+}
+
+.gradient-text {
+    /*background: -webkit-linear-gradient(18deg, rgba(110,231,128,1) 0%, rgba(0,212,255,1) 100%);*/
+    color: #35724e ;
+}
+.btn-primary {
+    background-color: rgb(38, 97, 52) !important;
+    border-color: rgb(47, 121, 64)  !important;
+}
+
+.btn-primary:hover, .btn-primary:focus, .btn-primary:active, .btn-primary.active, .open>.dropdown-toggle.btn-primary {
+    color: #fff;
+    background-color: rgb(25, 61, 33) !important;
+    border-color: rgb(38, 97, 52) ; 
+}
