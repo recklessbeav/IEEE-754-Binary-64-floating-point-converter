@@ -88,13 +88,11 @@ h1{
     color: #35724e ;
 }
 .btn-primary {
-    background-color: rgb(38, 97, 52) !important;
-    border-color: rgb(47, 121, 64)  !important;
+    background-color: #477ed1 !important;
     margin-bottom: 30px;
 }
 
 .btn-primary:hover, .btn-primary:focus, .btn-primary:active, .btn-primary.active, .open>.dropdown-toggle.btn-primary {
     color: #fff;
-    background-color: rgb(25, 61, 33) !important;
-    border-color: rgb(38, 97, 52) ; 
+    background-color: #104ca5 !important;
 }
