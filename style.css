@@ -4,6 +4,38 @@
     color: #F2F2F2;
 }
 
+
+.container{
+    margin-right: auto;
+    margin-left: auto;
+    padding-left: 15px;
+    padding-right: 15px;
+}
+
+.content{
+    margin: 0 auto;
+    max-width: 450px;
+}
+
+.container2{
+    margin-right: auto;
+    margin-left: auto;
+    padding-left: 15px;
+    padding-right: 15px;
+}
+
+
+.row{
+    margin-top: 10px;
+    margin-bottom: 10px;
+    margin-left: -15px;
+    margin-right: -15px;
+}
+
+#form2{
+    margin-top: 50px;
+}
+
 form label {
     font-weight: bold;
 }
@@ -58,6 +90,7 @@ h1{
 .btn-primary {
     background-color: rgb(38, 97, 52) !important;
     border-color: rgb(47, 121, 64)  !important;
+    margin-bottom: 30px;
 }
 
 .btn-primary:hover, .btn-primary:focus, .btn-primary:active, .btn-primary.active, .open>.dropdown-toggle.btn-primary {
