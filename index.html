@@ -36,11 +36,11 @@
             <form>
                 <div class="form-group">
                     <label for="input">Input</label>
-                    <input type="text" class="form-control" id="inputAns" placeholder="Enter binary 64">
+                    <input type="text" class="form-control" id="inputAns" placeholder="Enter binary 64" required>
                 </div>
                 <div class="form-group">
                     <label for="binary">Base-2 Exponent</label>
-                    <input type="text" class="form-control" id="significand" placeholder="Enter base-2 exponent">
+                    <input type="text" class="form-control" id="significand" placeholder="Enter base-2 exponent" required>
                 </div>
                 <button type="button" class="btn btn-primary" onclick="convert()">Submit</button>
             </form>
@@ -83,6 +83,11 @@
 
 <script>
     function convert(){
+        if ($('#inputAns').val().trim() === '' || $('#significand').val().trim() == '') {
+            alert('Please enter input and exponent.');
+            return;
+        }
+
         var input = parseFloat($('#inputAns').val());
         var exponent = parseInt($('#significand').val()) + 1023;
         // console.log(input)
