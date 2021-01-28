@@ -44,6 +44,7 @@
                     <input type="text" class="form-control" id="significand" placeholder="Enter base-2 exponent" required>
                 </div>
                 <button type="button" class="btn btn-primary" onclick="convert()">Submit</button>
+                <button type="button" class="btn btn-danger" onclick="resetval()">Reset</button>
             </form>
         </div>
     </div>
@@ -93,28 +94,21 @@
         var input = $('#inputAns').val();
         var exponent = parseInt($('#significand').val()) + 1023;
         var flag = true;
-        // console.log(input.length)
-        // console.log(input)
 
         for (let i=0; i<input.length; i++){
             if(input[i] == 0 || input[i] == 1 || input[i] == '.'){
                 // flag = true;
                 $('#error').prop("hidden", true)
-                // console.log(i,input[i],$('#error').prop("hidden"),flag);
             }
             else{
                 flag = false;
                 console.log("error")
                 $('#error').prop("hidden", false)
-                // console.log(i,input[i],$('#error').prop("hidden"),flag);
-                // break;
             }
         }
         // console.log(input)
 
         if (flag){
-            // console.log(input)
-            // console.log(exponent)
             // sign bit
             var sign = (''+input)[0];
             // console.log(sign)
@@ -138,15 +132,6 @@
                 }
 
                 var post_bin = $('#exponent').val();
-                // console.log(post_bin.length)
-                // var post_bin_length = post_bin.length;
-
-                // for (let i = 0; i < post_bin_length; i++){
-                //     if(i == 3 || i == 7){
-                //         $('#exponent').push("_");
-                //     }
-                //     $('#exponent').append(post_bin[i])
-                // }
 
                 if(sign == '-'){
                     n = 3
@@ -156,12 +141,8 @@
                 }
                 var input_val = $('#inputAns').val()
                 // console.log(input_length)
-                // console.log(input.length)
                 var input_length = input_val.length
-                // for (i = n; i < input_length.length; i++){
-                    $('#fraction').val(input_val.slice(n,input_length))
-                    // fraction_array.push(input_length[i]);
-                // }
+                $('#fraction').val(input_val.slice(n,input_length))
 
                 var fraction_val = $('#fraction').val()
                 var fraction_length = fraction_val.length;
@@ -254,6 +235,15 @@
         else if (strings == "1111"){
             return "F";
         }
+    }
+
+    function resetval(){
+        $('#sign').val('');
+        $('#exponent').val('');
+        $('#fraction').val('');
+        $('#hex').val('');
+        $('#significand').val('');
+        $('#inputAns').val('');
     }
 </script>
 
