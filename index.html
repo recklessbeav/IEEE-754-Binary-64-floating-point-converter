@@ -37,6 +37,7 @@
                 <div class="form-group">
                     <label for="input">Input</label>
                     <input type="text" class="form-control" id="inputAns" placeholder="Enter binary 64" required>
+                    <p id="error" style="color: red" hidden>Please input only binary value</p>
                 </div>
                 <div class="form-group">
                     <label for="binary">Base-2 Exponent</label>
@@ -88,96 +89,120 @@
             return;
         }
 
-        var input = parseFloat($('#inputAns').val());
+        // var input = parseFloat($('#inputAns').val());
+        var input = $('#inputAns').val();
         var exponent = parseInt($('#significand').val()) + 1023;
+        var flag = true;
+        // console.log(input.length)
         // console.log(input)
-        // console.log(exponent)
-        // sign bit
-        var sign = (''+input)[0];
-        // console.log(sign)
-        if(sign == '-'){
-            $('#sign').val(1);
-        }
-        else{
-            $('#sign').val(0);
-        }
 
-        // exponent representation bits
-        var input_exponent = $('#significand').val()
-        if(input_exponent >= -1022 && input_exponent <= 1023){
-            var binary_exponent = (exponent >>> 0).toString(2);
-            $('#exponent').val(binary_exponent);
-
-            var binary_exponent_length = binary_exponent.length;
-            // console.log(binary_exponent_length);
-            if(binary_exponent_length < 11){
-                $('#exponent').val('0' + binary_exponent);
-            }
-
-            var post_bin = $('#exponent').val();
-            // console.log(post_bin.length)
-            // var post_bin_length = post_bin.length;
-
-            // for (let i = 0; i < post_bin_length; i++){
-            //     if(i == 3 || i == 7){
-            //         $('#exponent').push("_");
-            //     }
-            //     $('#exponent').append(post_bin[i])
-            // }
-
-            if(sign == '-'){
-                n = 3
+        for (let i=0; i<input.length; i++){
+            if(input[i] == 0 || input[i] == 1 || input[i] == '.'){
+                // flag = true;
+                $('#error').prop("hidden", true)
+                // console.log(i,input[i],$('#error').prop("hidden"),flag);
             }
             else{
-                n = 2
+                flag = false;
+                console.log("error")
+                $('#error').prop("hidden", false)
+                // console.log(i,input[i],$('#error').prop("hidden"),flag);
+                // break;
             }
-            var input_val = $('#inputAns').val()
-            // console.log(input_length)
-            // console.log(input.length)
-            var input_length = input_val.length
-            // for (i = n; i < input_length.length; i++){
-                $('#fraction').val(input_val.slice(n,input_length))
-                // fraction_array.push(input_length[i]);
-            // }
+        }
+        // console.log(input)
 
-            var fraction_val = $('#fraction').val()
-            var fraction_length = fraction_val.length;
-
-            var needed = 52 - fraction_length
-
-            var needed_zeroes = "";
-            var zeroes = "0";
-            for (let i = 0; i < needed; i++){
-                needed_zeroes = needed_zeroes.concat(zeroes);
+        if (flag){
+            // console.log(input)
+            // console.log(exponent)
+            // sign bit
+            var sign = (''+input)[0];
+            // console.log(sign)
+            if(sign == '-'){
+                $('#sign').val(1);
             }
-            // console.log(needed_zeroes.length)
-            var fraction_final = fraction_val.concat(needed_zeroes)
-            $('#fraction').val(fraction_final)
+            else{
+                $('#sign').val(0);
+            }
+
+            // exponent representation bits
+            var input_exponent = $('#significand').val()
+            if(input_exponent >= -1022 && input_exponent <= 1023){
+                var binary_exponent = (exponent >>> 0).toString(2);
+                $('#exponent').val(binary_exponent);
+
+                var binary_exponent_length = binary_exponent.length;
+                // console.log(binary_exponent_length);
+                if(binary_exponent_length < 11){
+                    $('#exponent').val('0' + binary_exponent);
+                }
+
+                var post_bin = $('#exponent').val();
+                // console.log(post_bin.length)
+                // var post_bin_length = post_bin.length;
+
+                // for (let i = 0; i < post_bin_length; i++){
+                //     if(i == 3 || i == 7){
+                //         $('#exponent').push("_");
+                //     }
+                //     $('#exponent').append(post_bin[i])
+                // }
+
+                if(sign == '-'){
+                    n = 3
+                }
+                else{
+                    n = 2
+                }
+                var input_val = $('#inputAns').val()
+                // console.log(input_length)
+                // console.log(input.length)
+                var input_length = input_val.length
+                // for (i = n; i < input_length.length; i++){
+                    $('#fraction').val(input_val.slice(n,input_length))
+                    // fraction_array.push(input_length[i]);
+                // }
+
+                var fraction_val = $('#fraction').val()
+                var fraction_length = fraction_val.length;
+
+                var needed = 52 - fraction_length
+
+                var needed_zeroes = "";
+                var zeroes = "0";
+                for (let i = 0; i < needed; i++){
+                    needed_zeroes = needed_zeroes.concat(zeroes);
+                }
+                // console.log(needed_zeroes.length)
+                var fraction_final = fraction_val.concat(needed_zeroes)
+                $('#fraction').val(fraction_final)
+            }
+            
+            // hex representation
+            var sign = $('#sign').val();
+            var exponent = $('#exponent').val();
+            var fraction = $('#fraction').val();
+            var hex = sign.concat(exponent, fraction);
+
+            var hex_final = ""
+            var first = 0;
+            var second = 4;
+            for (let i=0; i<15; i++){
+                var to_be_concat = convert_hex(hex.slice(first,second));
+                hex_final = hex_final.concat(to_be_concat);
+                first = second;
+                second = second + 4;
+            }
+            // console.log(hex)
+            // console.log(hex.slice(0,4))
+            // console.log(hex.slice(4,8))
+            // console.log(hex.slice(8,12))
+            // console.log(hex.slice(12,16))
+            // console.log(hex.slice(16,20))
+
+            $('#hex').val('0x' + hex_final);
         }
         
-        // hex representation
-        var sign = $('#sign').val();
-        var exponent = $('#exponent').val();
-        var fraction = $('#fraction').val();
-        var hex = sign.concat(exponent, fraction);
-
-        var hex_final = ""
-        var first = 0;
-        var second = 4;
-        for (let i=0; i<15; i++){
-            var to_be_concat = convert_hex(hex.slice(first,second));
-            hex_final = hex_final.concat(to_be_concat);
-            first = second;
-            second = second + 4;
-        }
-        // console.log(hex)
-        // console.log(hex.slice(0,4))
-        // console.log(hex.slice(4,8))
-        // console.log(hex.slice(8,12))
-        // console.log(hex.slice(12,16))
-        // console.log(hex.slice(16,20))
-
-        $('#hex').val('0x' + hex_final);
     }
 
     function convert_hex(strings){
