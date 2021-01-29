@@ -60,8 +60,43 @@ const binary64 = function(mantissaInput, exponent) {
     }
     exponent += addToExponent;
     exponent += 1023;
-    exponent = decbin(exponent, 11);
+    
+    //denormalized and inf check
+    if (exponent < 1) {
+        let paddingSize = Math.abs(exponent);
+        if (paddingSize === 0) {
+            paddingSize = 1;
+        }
 
+        let zeroes = '';
+        for (let i = 0; i < paddingSize; i++) {
+            zeroes = zeroes + '0';
+        }
+
+        mantissa = mantissa.replace('.', '');
+        mantissa = zeroes + mantissa;
+
+        let fractionSize = 52 - mantissa.length;
+        let fractionPart = mantissa;
+        for (let i = 0; i < fractionSize; i++) {
+            fractionPart = fractionPart + '0';
+        }
+        
+        exponent = '00000000000';
+        let helper = signBit + exponent + fractionPart;
+        let hex = parseInt(helper, 2).toString(16).toUpperCase();
+        hex = '0x' + hex;
+        console.log(signBit, exponent, fractionPart, hex);
+
+        return {
+            signBit: signBit,
+            exponent: exponent,
+            fractionPart: fractionPart,
+            hex: hex
+        };
+    }
+
+    exponent = decbin(exponent, 11);
     mantissa = mantissa.replace('.', '');
     mantissa = insert(mantissa, mantissa.indexOf('1') + 1, '.');
     let fractionPart = mantissa.split('.')[1];
@@ -96,7 +131,7 @@ function decbin(dec,length){
   return out;  
 }
 
-binary64('0', 15);
+binary64('-1.1110', -1026);
 
 
 
