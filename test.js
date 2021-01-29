@@ -1,4 +1,4 @@
-const binary64 = function(mantissaInput, exponent) {
+function binary64(mantissaInput, exponent) {
     if (exponent % 1 !== 0) {
         return qNan();
     }
@@ -54,7 +54,7 @@ const binary64 = function(mantissaInput, exponent) {
     let addToExponent;
     let index1 = mantissa.indexOf('1');
     let indexDot = mantissa.indexOf('.') === -1 
-        ? mantissa.length + 1     
+        ? mantissa.length     
         : mantissa.indexOf('.');
 
     if (index1 < indexDot) {
@@ -159,5 +159,5 @@ function decbin(dec,length){
 }
 
 
-
+console.log(binary64('1.00111', 5));
 

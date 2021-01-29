@@ -19,6 +19,7 @@
 
     <!-- TITLE -->
     <title>Binary 64 Floating Point Converter</title>
+
 </head>
 
 <body>
@@ -85,156 +86,178 @@
 
 <script>
     function convert(){
-        if ($('#inputAns').val().trim() === '' || $('#significand').val().trim() == '') {
-            alert('Please enter input and exponent.');
-            return;
-        }
+        let mantissaInput = $('#inputAns').val();
+        let exponent = $('#significand').val();
 
-        // var input = parseFloat($('#inputAns').val());
-        var input = $('#inputAns').val();
-        var exponent = parseInt($('#significand').val()) + 1023;
-        var flag = true;
+        let result = binary64(mantissaInput, Number(exponent));
 
-        for (let i=0; i<input.length; i++){
-            if(input[i] == 0 || input[i] == 1 || input[i] == '.'){
-                // flag = true;
-                $('#error').prop("hidden", true)
-            }
-            else{
-                flag = false;
-                console.log("error")
-                $('#error').prop("hidden", false)
-            }
-        }
-        // console.log(input)
-
-        if (flag){
-            // sign bit
-            var sign = (''+input)[0];
-            // console.log(sign)
-            if(sign == '-'){
-                $('#sign').val(1);
-            }
-            else{
-                $('#sign').val(0);
-            }
-
-            // exponent representation bits
-            var input_exponent = $('#significand').val()
-            if(input_exponent >= -1022 && input_exponent <= 1023){
-                var binary_exponent = (exponent >>> 0).toString(2);
-                $('#exponent').val(binary_exponent);
-
-                var binary_exponent_length = binary_exponent.length;
-                // console.log(binary_exponent_length);
-                if(binary_exponent_length < 11){
-                    $('#exponent').val('0' + binary_exponent);
-                }
-
-                var post_bin = $('#exponent').val();
-
-                if(sign == '-'){
-                    n = 3
-                }
-                else{
-                    n = 2
-                }
-                var input_val = $('#inputAns').val()
-                // console.log(input_length)
-                var input_length = input_val.length
-                $('#fraction').val(input_val.slice(n,input_length))
-
-                var fraction_val = $('#fraction').val()
-                var fraction_length = fraction_val.length;
-
-                var needed = 52 - fraction_length
-
-                var needed_zeroes = "";
-                var zeroes = "0";
-                for (let i = 0; i < needed; i++){
-                    needed_zeroes = needed_zeroes.concat(zeroes);
-                }
-                // console.log(needed_zeroes.length)
-                var fraction_final = fraction_val.concat(needed_zeroes)
-                $('#fraction').val(fraction_final)
-            }
-            
-            // hex representation
-            var sign = $('#sign').val();
-            var exponent = $('#exponent').val();
-            var fraction = $('#fraction').val();
-            var hex = sign.concat(exponent, fraction);
-
-            var hex_final = ""
-            var first = 0;
-            var second = 4;
-            for (let i=0; i<15; i++){
-                var to_be_concat = convert_hex(hex.slice(first,second));
-                hex_final = hex_final.concat(to_be_concat);
-                first = second;
-                second = second + 4;
-            }
-            // console.log(hex)
-            // console.log(hex.slice(0,4))
-            // console.log(hex.slice(4,8))
-            // console.log(hex.slice(8,12))
-            // console.log(hex.slice(12,16))
-            // console.log(hex.slice(16,20))
-
-            $('#hex').val('0x' + hex_final);
-        }
+        //console.log(result);
+        // Access results through
+        // result.signBit
+        // result.exponent
+        // result.fractionPart
+        // result.hex
         
     }
 
-    function convert_hex(strings){
-        if(strings == "0000"){
-            return "0";
+    function binary64(mantissaInput, exponent) {
+    if (exponent % 1 !== 0) {
+        return qNan();
+    }
+
+    let input = mantissaInput.trim();
+
+    let signBit;
+    let mantissa;
+    if (input[0] === '-') {
+        mantissa = input.slice(1, input.length);
+        signBit = 1;
+    } else if (input[0] === '0' || input[0] === '1') {
+        mantissa = input;
+        signBit = 0
+    } else {
+        return qNan();
+    }
+    signBit = String(signBit);
+
+    if (mantissa[0] !== '0' && mantissa[0] !== '1') {
+        return qNan();
+    }
+
+    //zero check
+    if (Number(mantissa) === 0) {
+        exponent = '00000000000';
+        let fractionPart = '0000000000000000000000000000000000000000000000000000';
+        let hex = '0x0000000000000000';
+        
+        return {
+            signBit: signBit,
+            exponent: exponent,
+            fractionPart: fractionPart,
+            hex: hex
         }
-        else if (strings == "0001"){
-            return "1";
+    }
+
+    let pointFlag = false; 
+    for (let i = 0; i < mantissa.length; i++) {
+        if (mantissa[i] !== '0' && mantissa[i] !== '1') {
+            if (mantissa[i] !== '.') {
+                return qNan();
+            }
+
+            if (pointFlag) {
+                return qNan();
+            }
+            
+            pointFlag = true;
         }
-        else if (strings == "0010"){
-            return "2";
+    }
+
+    let addToExponent;
+    let index1 = mantissa.indexOf('1');
+    let indexDot = mantissa.indexOf('.') === -1 
+        ? mantissa.length     
+        : mantissa.indexOf('.');
+
+    if (index1 < indexDot) {
+        addToExponent = indexDot - (index1 + 1);
+    } else if (index1 > indexDot) {
+        addToExponent = indexDot - index1;
+    }
+    exponent += addToExponent;
+    exponent += 1023;
+    
+    //denormalized and inf check
+    if (exponent < 1) {
+        let paddingSize = Math.abs(exponent);
+        if (paddingSize === 0) {
+            paddingSize = 1;
         }
-        else if (strings == "0011"){
-            return "3";
+
+        let zeroes = '';
+        for (let i = 0; i < paddingSize; i++) {
+            zeroes = zeroes + '0';
         }
-        else if (strings == "0100"){
-            return "4";
+
+        mantissa = mantissa.replace('.', '');
+        mantissa = zeroes + mantissa;
+
+        let fractionSize = 52 - mantissa.length;
+        let fractionPart = mantissa;
+        for (let i = 0; i < fractionSize; i++) {
+            fractionPart = fractionPart + '0';
         }
-        else if (strings == "0101"){
-            return "5";
-        }
-        else if (strings == "0110"){
-            return "6";
-        }
-        else if (strings == "0111"){
-            return "7";
-        }
-        else if (strings == "1000"){
-            return "8";
-        }
-        else if (strings == "1001"){
-            return "9";
-        }
-        else if (strings == "1010"){
-            return "A";
-        }
-        else if (strings == "1011"){
-            return "B";
-        }
-        else if (strings == "1100"){
-            return "C";
-        }
-        else if (strings == "1101"){
-            return "D";
-        }
-        else if (strings == "1110"){
-            return "E";
-        }
-        else if (strings == "1111"){
-            return "F";
-        }
+        
+        exponent = '00000000000';
+        let helper = signBit + exponent + fractionPart;
+        let hex = parseInt(helper, 2).toString(16).toUpperCase();
+        hex = '0x' + hex;
+
+        return {
+            signBit: signBit,
+            exponent: exponent,
+            fractionPart: fractionPart,
+            hex: hex
+        };
+    }
+
+    //inf check
+    if (exponent > 2046) {
+        exponent = '11111111111';
+        let fractionPart = '0000000000000000000000000000000000000000000000000000';
+        let helper = signBit + exponent + fractionPart;
+        let hex = parseInt(helper, 2).toString(16).toUpperCase();
+        hex = '0x' + hex;
+
+        return {
+            signBit: signBit,
+            exponent: exponent,
+            fractionPart: fractionPart,
+            hex: hex
+        }; 
+    }
+
+    exponent = decbin(exponent, 11);
+    mantissa = mantissa.replace('.', '');
+    mantissa = insert(mantissa, mantissa.indexOf('1') + 1, '.');
+    let fractionPart = mantissa.split('.')[1];
+    let fractionSize = 52 - fractionPart.length;
+    for (let i = 0; i < fractionSize; i++) {
+        fractionPart = fractionPart + '0';
+    }
+
+    let helper = signBit + exponent + fractionPart;
+    let hex = parseInt(helper, 2).toString(16).toUpperCase();
+    hex = '0x' + hex;
+
+    return {
+        signBit: signBit,
+        exponent: exponent,
+        fractionPart: fractionPart,
+        hex: hex
+    }
+
+}
+
+    //V8 compiler (browsers) automatically defaults NaNs into qNan
+    function qNan() {
+        return {
+            signBit: 'x',
+            exponent: '11111111',
+            fractionPart: '1x...x',
+            hex: 'qNan'
+        };
+    }
+
+    function insert(str, index, value) {
+        return str.substr(0, index) + value + str.substr(index);
+    }
+
+    function decbin(dec,length){
+    var out = "";
+    while(length--)
+        out += (dec >> length ) & 1;    
+    return out;  
     }
 
     function resetval(){
