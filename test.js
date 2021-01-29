@@ -1,4 +1,8 @@
 const binary64 = function(mantissaInput, exponent) {
+    if (exponent % 1 !== 0) {
+        return qNan();
+    }
+
     let input = mantissaInput.trim();
 
     let signBit;
@@ -10,12 +14,12 @@ const binary64 = function(mantissaInput, exponent) {
         mantissa = input;
         signBit = 0
     } else {
-        throw new Error('Invalid input!');
+        return qNan();
     }
     signBit = String(signBit);
 
     if (mantissa[0] !== '0' && mantissa[0] !== '1') {
-        throw new Error('Invalid input!');
+        return qNan();
     }
 
     //zero check
@@ -36,11 +40,11 @@ const binary64 = function(mantissaInput, exponent) {
     for (let i = 0; i < mantissa.length; i++) {
         if (mantissa[i] !== '0' && mantissa[i] !== '1') {
             if (mantissa[i] !== '.') {
-                throw new Error('Invalid input!');
+                return qNan();
             }
 
             if (pointFlag) {
-                throw new Error('Invalid input!');
+                return qNan();
             }
             
             pointFlag = true;
@@ -133,6 +137,16 @@ const binary64 = function(mantissaInput, exponent) {
 
 }
 
+//V8 compiler (browsers) automatically defaults NaNs into qNan
+function qNan() {
+    return {
+        signBit: 'x',
+        exponent: '11111111',
+        fractionPart: '1x...x',
+        hex: 'qNan'
+    };
+}
+
 function insert(str, index, value) {
     return str.substr(0, index) + value + str.substr(index);
 }
@@ -144,7 +158,6 @@ function decbin(dec,length){
   return out;  
 }
 
-binary64('-1.111', 9999);
 
 
 
