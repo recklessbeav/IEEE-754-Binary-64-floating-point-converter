@@ -86,7 +86,6 @@ const binary64 = function(mantissaInput, exponent) {
         let helper = signBit + exponent + fractionPart;
         let hex = parseInt(helper, 2).toString(16).toUpperCase();
         hex = '0x' + hex;
-        console.log(signBit, exponent, fractionPart, hex);
 
         return {
             signBit: signBit,
@@ -94,6 +93,22 @@ const binary64 = function(mantissaInput, exponent) {
             fractionPart: fractionPart,
             hex: hex
         };
+    }
+
+    //inf check
+    if (exponent > 2046) {
+        exponent = '11111111111';
+        let fractionPart = '0000000000000000000000000000000000000000000000000000';
+        let helper = signBit + exponent + fractionPart;
+        let hex = parseInt(helper, 2).toString(16).toUpperCase();
+        hex = '0x' + hex;
+
+        return {
+            signBit: signBit,
+            exponent: exponent,
+            fractionPart: fractionPart,
+            hex: hex
+        }; 
     }
 
     exponent = decbin(exponent, 11);
@@ -108,8 +123,6 @@ const binary64 = function(mantissaInput, exponent) {
     let helper = signBit + exponent + fractionPart;
     let hex = parseInt(helper, 2).toString(16).toUpperCase();
     hex = '0x' + hex;
-
-    console.log(signBit, exponent, fractionPart, hex);
 
     return {
         signBit: signBit,
@@ -131,7 +144,7 @@ function decbin(dec,length){
   return out;  
 }
 
-binary64('-1.1110', -1026);
+binary64('-1.111', 9999);
 
 
 
