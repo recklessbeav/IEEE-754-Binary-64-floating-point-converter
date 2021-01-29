@@ -18,6 +18,20 @@ const binary64 = function(mantissaInput, exponent) {
         throw new Error('Invalid input!');
     }
 
+    //zero check
+    if (Number(mantissa) === 0) {
+        exponent = '00000000000';
+        let fractionPart = '0000000000000000000000000000000000000000000000000000';
+        let hex = '0x0000000000000000';
+        
+        return {
+            signBit: signBit,
+            exponent: exponent,
+            fractionPart: fractionPart,
+            hex: hex
+        }
+    }
+
     let pointFlag = false; 
     for (let i = 0; i < mantissa.length; i++) {
         if (mantissa[i] !== '0' && mantissa[i] !== '1') {
@@ -58,8 +72,9 @@ const binary64 = function(mantissaInput, exponent) {
 
     let helper = signBit + exponent + fractionPart;
     let hex = parseInt(helper, 2).toString(16).toUpperCase();
+    hex = '0x' + hex;
 
-    console.log(signBit, exponent, fractionPart, hex.length);
+    console.log(signBit, exponent, fractionPart, hex);
 
     return {
         signBit: signBit,
@@ -81,7 +96,7 @@ function decbin(dec,length){
   return out;  
 }
 
-binary64('-0.000100111', 15);
+binary64('0', 15);
 
 
 
