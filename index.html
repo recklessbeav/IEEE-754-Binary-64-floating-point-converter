@@ -97,7 +97,11 @@
         // result.exponent
         // result.fractionPart
         // result.hex
-        
+
+        $('#sign').val(result.signBit);
+        $('#exponent').val(result.exponent);
+        $('#fraction').val(result.fractionPart);
+        $('#hex').val(result.hex);
     }
 
     function binary64(mantissaInput, exponent) {
