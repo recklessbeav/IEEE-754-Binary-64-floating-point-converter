@@ -18,17 +18,16 @@
 
 
     <!-- TITLE -->
-    <title>Binary 64 Floating Point Converter</title>
+    <title>IEEE Binary 64 Floating Point Converter</title>
 
 </head>
 
 <body>
 <nav class="navbar navbar-expand-lg sticky-top navbar-dark">
     <a class="navbar-brand" href="/">CSARCH2 - Group 3</a>
-   
 </nav>
 
-<h1> Binary 64 Floating Point Converter </h1>
+<h1> IEEE Binary-64 Floating Point Converter </h1>
 
 
 <form class="main" id="form">
@@ -44,8 +43,12 @@
                     <label for="binary">Base-2 Exponent</label>
                     <input type="text" class="form-control" id="significand" placeholder="Enter base-2 exponent" required>
                 </div>
-                <button type="button" class="btn btn-primary" onclick="convert()">Submit</button>
-                <button type="button" class="btn btn-danger" onclick="resetval()">Reset</button>
+                <div class="row">
+                    <div class="col-sm-12">
+                        <button id="btnSubmit" type="button" class="btn btn-primary" onclick="convert()">Submit</button>
+                        <button id="btnReset" type="button" class="btn btn-danger" onclick="resetval()">Reset</button>
+                    </div>
+                </div>
             </form>
         </div>
     </div>
@@ -82,6 +85,9 @@
             </fieldset>
     </div>
 </form>
+<footer>
+    <p class="text-center">Submitted by: Cuasi, Galura, Gelvoleo, Tulabot</p>
+</footer>
 
 
 <script>
@@ -274,6 +280,7 @@
     }
 </script>
 
-
+<!-- BOOTSTRAP JS -->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ho+j7jyWK8fNQe+A12Hb8AhRq26LrZ/JpcUGGOn+Y7RsweNrtN/tE3MoK7ZeZDyx" crossorigin="anonymous"></script>
 </body>
 </html>

@@ -96,3 +96,12 @@ h1{
     color: #fff;
     background-color: #104ca5 !important;
 }
+
+#btnSubmit, #btnReset{
+    display: inline-block;
+    vertical-align: top;
+}
+
+.text-center{
+    text-align: center;
+}
