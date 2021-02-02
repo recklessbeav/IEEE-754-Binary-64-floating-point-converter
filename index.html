@@ -45,8 +45,9 @@
                 </div>
                 <div class="row">
                     <div class="col-sm-12">
-                        <button id="btnSubmit" type="button" class="btn btn-primary" onclick="convert()">Submit</button>
+                        <button id="btnSubmit" type="button" class="btn btn-success" onclick="convert()">Submit</button>
                         <button id="btnReset" type="button" class="btn btn-danger" onclick="resetval()">Reset</button>
+                        <button id="btnCopy" type="button" class="btn btn-primary" onclick="WriteToFile(this)">Copy Results</button>
                     </div>
                 </div>
             </form>
@@ -280,6 +281,36 @@
         $('#hex').val('');
         $('#significand').val('');
         $('#inputAns').val('');
+    }
+
+    function WriteToFile(passForm){
+        /* Get the text field */
+        var input = document.getElementById("inputAns");
+        var exponent = document.getElementById("significand");
+        var signbit = document.getElementById("sign");
+        var exponentbit = document.getElementById("exponent");
+        var fractionbit = document.getElementById("fraction");
+        var hex = document.getElementById("hex");
+
+        /* Select the text field */
+        input.select();
+        input.setSelectionRange(0, 99999); /* For mobile devices */
+        exponent.select();
+        exponent.setSelectionRange(0, 99999); /* For mobile devices */
+        signbit.select();
+        signbit.setSelectionRange(0, 99999); /* For mobile devices */
+        exponentbit.select();
+        exponentbit.setSelectionRange(0, 99999); /* For mobile devices */
+        fractionbit.select();
+        fractionbit.setSelectionRange(0, 99999); /* For mobile devices */
+        hex.select();
+        hex.setSelectionRange(0, 99999); /* For mobile devices */
+
+        /* Copy the text inside the text field */
+        document.execCommand("copy");
+
+        /* Alert the copied text */
+        alert("You can copy this alert message and paste it into notepad\n\nInput Mantissa: " + input.value + "\nInput Exponent: " + exponent.value + "\nSign Bit: " + signbit.value + "\nExponent Representation: " + exponentbit.value + "\nFraction Part of Significand: " + fractionbit.value + "\nHex Representation: " + hex.value);
     }
 </script>
 
