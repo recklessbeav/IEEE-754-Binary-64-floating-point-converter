@@ -97,7 +97,7 @@
     <p class="text-center">Submitted by: Cuasi, Galura, Gelvoleo, Tulabot</p>
 </footer>
 
-
+<textarea id="results" name="results"></textarea>
 <script>
     function convert(){
         let mantissaInput = $('#inputAns').val();
@@ -291,14 +291,6 @@
     }
 
     function copyResults(){
-        /* Get the text field */
-        // var input = document.getElementById("inputAns");
-        // var exponent = document.getElementById("significand");
-        // var signbit = document.getElementById("sign");
-        // var exponentbit = document.getElementById("exponent");
-        // var fractionbit = document.getElementById("fraction");
-        // var hex = document.getElementById("hex");
-
         var input = $('#inputAns').val();
         var exponent = $('#significand').val();
         var signbit = $('#sign').val();
@@ -306,33 +298,16 @@
         var fractionbit = $('#fraction').val();
         var hex = $('#hex').val();
 
-        /* Select the text field */
-        // input.select();
-        // input.setSelectionRange(0, 99999); /* For mobile devices */
-        // exponent.select();
-        // exponent.setSelectionRange(0, 99999); /* For mobile devices */
-        // signbit.select();
-        // signbit.setSelectionRange(0, 99999); /* For mobile devices */
-        // exponentbit.select();
-        // exponentbit.setSelectionRange(0, 99999); /* For mobile devices */
-        // fractionbit.select();
-        // fractionbit.setSelectionRange(0, 99999); /* For mobile devices */
-        // hex.select();
-        // hex.setSelectionRange(0, 99999); /* For mobile devices */
+        $('#results').val(`Input: ${input} x 2^${exponent}
+        \nSign Bit: ${signbit}
+        \nExponent Representation: ${exponentbit}
+        \nFraction Part of Significand: ${fractionbit}
+        \nHex Representation: ${hex}
+        `);
 
-        /* Copy the text inside the text field */
-        // document.execCommand("copy");
-
-        /* Alert the copied text */
-        // alert("You can copy this alert message and paste it into notepad\n\nInput Mantissa: " + input.value + "\nInput Exponent: " + exponent.value + "\nSign Bit: " + signbit.value + "\nExponent Representation: " + exponentbit.value + "\nFraction Part of Significand: " + fractionbit.value + "\nHex Representation: " + hex.value);
-        
-        $('#copyR').val("Exponent Representation: " + exponentbit + "\nFraction Part of Significand: " + fractionbit + "\nHex Representation: " + hex)
-
-        var results = document.getElementById("copyR");
-        results.select();
-        results.setSelectionRange(0, 99999);
-        document.execCommand("copy");
-        alert("Copied text: \n" + results.value);
+        $('#results').select();
+        document.execCommand('copy');
+        alert('Results copied!');
     }
 </script>
 

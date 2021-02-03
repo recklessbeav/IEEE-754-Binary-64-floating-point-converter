@@ -1,3 +1,10 @@
+#results {
+    position: absolute;
+    opacity: .01;
+    height: 0;
+    overflow: hidden;
+  }
+
 .navbar {
     background-color: #477ed1;
     font-family: 'Montserrat', sans-serif;
