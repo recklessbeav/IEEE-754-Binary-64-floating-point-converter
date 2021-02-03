@@ -20,6 +20,12 @@
     <!-- TITLE -->
     <title>IEEE Binary 64 Floating Point Converter</title>
 
+    <style>
+        input:focus{
+            outline: none;
+        }
+    </style>
+
 </head>
 
 <body>
@@ -43,13 +49,13 @@
                     <label for="binary">Base-2 Exponent</label>
                     <input type="text" class="form-control" id="significand" placeholder="Enter base-2 exponent" required>
                 </div>
-                <input type="text" id="copyR" style="height: 0; width: 0;">
                 <div class="row">
                     <div class="col-sm-12">
                         <button id="btnSubmit" type="button" class="btn btn-success" onclick="convert()">Submit</button>
                         <button id="btnReset" type="button" class="btn btn-danger" onclick="resetval()">Reset</button>
                         <button id="btnCopy" type="button" class="btn btn-primary" onclick="copyResults()">Copy Results</button>
                     </div>
+                    <input type="text" id="copyR" style="height: 0; width: 0; border: none; border-color: transparent;">
                 </div>
             </form>
         </div>
